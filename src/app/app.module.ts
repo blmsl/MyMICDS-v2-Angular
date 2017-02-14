@@ -29,6 +29,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlannerComponent } from './components/planner/planner.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { NotesComponent } from './components/notes/notes.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SportsComponent } from './components/sports/sports.component';
 import { StatsComponent } from './components/stats/stats.component';
@@ -86,6 +87,7 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		PlannerComponent,
 		RegisterComponent,
 		ResetPasswordComponent,
+		NotesComponent,
 		SettingsComponent,
 		SidebarComponent,
 		SportsComponent,

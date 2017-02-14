@@ -1,0 +1,4 @@
+<div class="container">
+	{{ (editor.scrollHeight - 3) / 24 }} lines
+	<textarea #editor class="editor" [(ngModel)]="text" (keyup)="resizeEditor()"></textarea>
+</div>

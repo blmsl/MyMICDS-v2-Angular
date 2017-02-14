@@ -8,6 +8,7 @@ import { LunchComponent } from './components/lunch/lunch.component';
 import { PlannerComponent } from './components/planner/planner.component';
 import { DailyBulletinComponent } from './components/daily-bulletin/daily-bulletin.component';
 import { BulletinArchivesComponent } from './components/bulletin-archives/bulletin-archives.component';
+import { NotesComponent } from './components/notes/notes.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AboutComponent } from './components/about/about.component';
 import { HelpComponent } from './components/help/help.component';
@@ -61,6 +62,10 @@ const appRoutes: Routes = [
 	{
 		path: 'daily-bulletin/:bulletin',
 		component: DailyBulletinComponent
+	},
+	{
+		path: 'notes',
+		component: NotesComponent
 	},
 	{
 		path: 'settings',
