@@ -37,8 +37,14 @@
 					</div>
 					<div *ngFor="let week of formattedMonth" class="calendar-week">
 						<div *ngFor="let day of week" class="calendar-weekday" (click)="selectDay(day?.date, $event)">
-							<div class="calendar-weekday-date" [class.today]="day?.today">
-								{{ day?.date.date() }}
+							<div class="calendar-weekday-header">
+								<div class="calendar-weekday-date" [class.today]="day?.today">
+									{{ day?.date.date() }}
+								</div>
+								<div *ngIf="days[day?.date.year()] && days[day?.date.year()][day?.date.month() + 1] && days[day?.date.year()][day?.date.month() + 1][day?.date.date()]"
+									class="calendar-weekday-day-rotation">
+									Day {{ days[day?.date.year()][day?.date.month() + 1][day?.date.date()] }}
+								</div>
 							</div>
 							<div *ngFor="let event of day?.events" class="event" (click)="selectDayEvent(event?.data?._id)"
 								[class.text-dark] = "event?.data.class?.textDark"
@@ -78,6 +84,26 @@
 						<span *ngIf="selectionDay === null">Coming Up</span>
 						<span *ngIf="selectionDay !== null">{{ selectionDay.toDate() | date:'MMMM d, y' }}</span>
 					</h1>
+					<h3 *ngIf="selectionDay !== null && days[selectionDay.year()] && days[selectionDay.year()][selectionDay.month() + 1] && days[selectionDay.year()][selectionDay.month() + 1][selectionDay.date()]">
+						Day {{ days[selectionDay.year()][selectionDay.month() + 1][selectionDay.date()] }}
+					</h3>
+					<!-- Create Event and Coming Up button at the top -->
+					<div class="sidebar-buttons">
+						<div class="btn-group">
+							<button class="btn btn-info" (click)="createEventModal.show()">
+								<span>
+									<i class="fa fa-plus"></i>
+									Create Event
+								</span>
+							</button>
+							<button *ngIf="selectionDay !== null" class="btn btn-warning" (click)="deselectDay()">
+								<span>
+									<i class="fa fa-undo"></i>
+									Coming Up
+								</span>
+							</button>
+						</div>
+					</div>
 				</div>
 				<div class="sidebar-close" (click)="sidebarClose()"><i class="fa fa-times"></i></div>
 				<!-- View events coming up if no day is selected -->
@@ -86,7 +112,12 @@
 					<div *ngFor="let day of comingUp" class="coming-up-day">
 						<!-- Display date -->
 						<div class="coming-up-due">
-							<h3 class="due">Due {{ day.date.display }}</h3>
+							<h3 class="due">
+								Due {{ day.date.display }}
+								<small *ngIf="days[day.date.object.year()] && days[day.date.object.year()][day.date.object.month() + 1] && days[day.date.object.year()][day.date.object.month() + 1][day.date.object.date()]">
+									Day {{ days[day.date.object.year()][day.date.object.month() + 1][day.date.object.date()] }}
+								</small>
+							</h3>
 							<h3 class="date">{{ day.date.object.toDate() | date:'dd.MM.yy' }}</h3>
 						</div>
 						<div class="coming-up-events">
@@ -149,23 +180,6 @@
 				</div>
 				<!-- Show day events if a day is selected -->
 				<div *ngIf="selectionDay !== null" class="day-selection">
-					<!-- Create Event and Coming Up button at the top -->
-					<div class="selection-event-options">
-						<div class="btn-group">
-							<button class="btn btn-info" (click)="createEventModal.show()">
-								<span>
-									<i class="fa fa-plus"></i>
-									Create Event
-								</span>
-							</button>
-							<button class="btn btn-warning" (click)="deselectDay()">
-								<span>
-									<i class="fa fa-undo"></i>
-									Coming Up
-								</span>
-							</button>
-						</div>
-					</div>
 					<!-- Message if there are no events -->
 					<div *ngIf="selectionEvents.length === 0" class="no-events">
 						There are no events for this day.
@@ -235,13 +249,13 @@
 
 <!-- Modal for creating events -->
 <div bsModal #createEventModal="bs-modal" class="create-event-modal modal fade" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="createEventModal.hide()">
+				<h4 class="modal-title pull-left">Create a Planner Event</h4>
+				<button type="button" class="close pull-right" (click)="createEventModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Create a Planner Event</h4>
 			</div>
 			<div class="modal-body">
 				<form #createEventForm="ngForm" novalidate>
@@ -283,19 +297,24 @@
 
 <!-- Modal for viewing events -->
 <div bsModal #viewEventModal="bs-modal" class="view-event-modal modal fade" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="viewEventModal.hide()">
+				<h4 class="modal-title pull-left">
+					{{ viewEventObject?.title }}
+					<br>
+					<small class="text-muted">{{ viewEventObject?.start | date }} - {{ viewEventObject?.end | date }}</small>
+				</h4>
+				<button type="button" class="close pull-right" (click)="viewEventModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">{{ viewEventObject?.title }}</h4>
-				<p class="event-modal-subtitle text-muted">{{ viewEventObject?.start | date }} - {{ viewEventObject?.end | date }}</p>
 			</div>
-			<div class="modal-body" [innerHTML]="viewEventObject?.desc"></div>
-			<div class="modal-footer" *ngIf="!viewEventObject?.canvas || viewEventObject?.link">
-				<!-- Maybe someday... -->
-				<!-- <button class="btn btn-success">Cross out as Completed</button> -->
+			<div *ngIf="viewEventObject?.desc?.length > 0" class="modal-body" [innerHTML]="viewEventObject?.desc"></div>
+			<div class="modal-footer" *ngIf="!viewEventObject?.canvas || viewEventObject?.link" [style.border-top]="viewEventObject?.desc?.length > 0 ? '' : 'none'">
+				<!-- Button to x -->
+				<button class="btn btn-success" (click)="crossoutEvent(viewEventObject._id, $event)">
+					{{ viewEventObject?.checked ? 'Mark as Incomplete' : 'Mark as Completed' }}
+				</button>
 				<!-- Button if there's a link and it's a Canvas Event -->
 				<a *ngIf="viewEventObject?.link && viewEventObject?.canvas" class="btn btn-info" [href]="viewEventObject.link" target="_blank">View Event on Canvas</a>
 				<!-- Button if there's a link and it's NOT a Canvas Event -->
@@ -309,13 +328,13 @@
 
 <!-- Modal for editing events -->
 <div bsModal #editEventModal="bs-modal" class="edit-event-modal modal fade" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editEventModal.hide()">
+				<h4 class="modal-title pull-left">Edit a Planner Event</h4>
+				<button type="button" class="close pull-right" (click)="editEventModal.hide()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Edit a Planner Event</h4>
 			</div>
 			<div class="modal-body">
 				<form #editEventForm="ngForm" novalidate>
