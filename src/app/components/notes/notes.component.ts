@@ -11,27 +11,25 @@ export class NotesComponent implements OnInit {
 	@ViewChild('editor')
 	editor;
 
-	private _text: string = '';
-
 	client: any = deepstream('localhost:6020').login();
-	notesRecord: any = this.client.record.getRecord('anotherNotes');
+	notesRecord: any = this.client.record.getRecord('notes');
+
+	private _text = '';
 
 	get text() {
 		return this._text;
 	}
 
 	set text(value) {
-		this._text = value;
-		this.resizeEditor();
-		this.notesRecord.set('note', this._text);
+		this.notesRecord.set('text', value);
 	}
 
 	constructor() { }
 
 	ngOnInit() {
-		this.text = 'test';
-		this.notesRecord.subscribe('note', value => {
+		this.notesRecord.subscribe('text', value => {
 			this._text = value;
+			this.resizeEditor();
 		});
 	}
 
