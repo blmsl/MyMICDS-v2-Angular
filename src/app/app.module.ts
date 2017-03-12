@@ -32,7 +32,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { NotesComponent } from './components/notes/notes.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SportsComponent } from './components/sports/sports.component';
-import { StatsComponent } from './components/stats/stats.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { BlurDirective, DarkBlurDirective, WhiteBlurDirective } from './directives/blur.directive';
@@ -93,7 +92,6 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 		SettingsComponent,
 		SidebarComponent,
 		SportsComponent,
-		StatsComponent,
 
 		// Directives
 		BlurDirective,
