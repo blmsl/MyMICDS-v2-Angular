@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { routing, appRoutingProviders } from './app.routing';
 import { ColorPickerModule, ColorPickerService } from 'angular2-color-picker';
-import { DatepickerModule, ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
-import {AuthHttp, AuthConfig, JwtHelper, AUTH_PROVIDERS} from 'angular2-jwt';
+import { DatepickerModule, ModalModule } from 'ng2-bootstrap';
+import { AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
 let jwtHelper = new JwtHelper();
 
 import { AppComponent } from './app.component';
@@ -31,7 +31,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SportsComponent } from './components/sports/sports.component';
-import { StatsComponent } from './components/stats/stats.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { BlurDirective, DarkBlurDirective, WhiteBlurDirective } from './directives/blur.directive';
@@ -54,6 +53,7 @@ import { StatsService } from './services/stats.service';
 import { UserService } from './services/user.service';
 import { WeatherService } from './services/weather.service';
 import { NotificationService } from './services/notification.service';
+import { SuggestionsService } from './services/suggestions.service';
 
 import { CompassDirectionPipe } from './pipes/compass-direction.pipe';
 import { DayRotationPipe } from './pipes/day-rotation.pipe';
@@ -62,6 +62,7 @@ import { SafeHtmlPipe, SafeScriptPipe, SafeStylePipe, SafeUrlPipe, SafeResourceU
 import { SchoolPercentagePipe } from './pipes/school-percentage.pipe';
 import { ValuesPipe } from './pipes/values.pipe';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 
 @NgModule({
 	declarations: [
@@ -89,7 +90,6 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		SettingsComponent,
 		SidebarComponent,
 		SportsComponent,
-		StatsComponent,
 
 		// Directives
 		BlurDirective,
@@ -107,7 +107,8 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		SafeResourceUrlPipe,
 		SchoolPercentagePipe,
 		ValuesPipe,
-		WeatherIconPipe
+		WeatherIconPipe,
+		SuggestionsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -116,14 +117,13 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		HttpModule,
 		routing,
 		ColorPickerModule,
-		DatepickerModule,
-		ModalModule
+		DatepickerModule.forRoot(),
+		ModalModule.forRoot()
 	],
 	providers: [
 		appRoutingProviders,
 		ColorPickerService,
 		Title,
-
 		AlertService,
 		AliasService,
 		AuthService,
@@ -142,49 +142,51 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		UserService,
 		WeatherService,
 		NotificationService,
+		SuggestionsService,
 
 		// JWT
-		AUTH_PROVIDERS,
 		{
 			provide: AuthHttp,
-			useFactory: (http) => {
-				return new AuthHttp(new AuthConfig({
-					tokenGetter: () => {
-						// Look in session storage for id_token, but fallback to local storage
-						let session = sessionStorage.getItem('id_token');
-						let local = localStorage.getItem('id_token');
-
-						let token = session || local;
-
-						if (typeof token !== 'string') { return ''; }
-
-						// Remove any quotations from the sides
-						token = token.split('"').join('');
-
-						// Check validity of jwt token
-						if (token.split('.').length !== 3) {
-							localStorage.removeItem('id_token');
-							sessionStorage.removeItem('id_token');
-							return '';
-						}
-
-						// Check if token is expired. If it is, delete and send user to login page
-						if (jwtHelper.isTokenExpired(token)) {
-							sessionStorage.removeItem('id_token');
-							localStorage.removeItem('id_token');
-
-							this.router.navigate(['/login']);
-							return '';
-						}
-
-						return token;
-					},
-					noJwtError: true
-				}), http);
-			},
+			useFactory: authHttpServiceFactory,
 			deps: [Http]
 		}
 	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function authHttpServiceFactory(http) {
+	return new AuthHttp(new AuthConfig({
+		tokenGetter: () => {
+			// Look in session storage for id_token, but fallback to local storage
+			let session = sessionStorage.getItem('id_token');
+			let local = localStorage.getItem('id_token');
+
+			let token = session || local;
+
+			if (typeof token !== 'string') { return ''; }
+
+			// Remove any quotations from the sides
+			token = token.split('"').join('');
+
+			// Check validity of jwt token
+			if (token.split('.').length !== 3) {
+				localStorage.removeItem('id_token');
+				sessionStorage.removeItem('id_token');
+				return '';
+			}
+
+			// Check if token is expired. If it is, delete and send user to login page
+			if (jwtHelper.isTokenExpired(token)) {
+				sessionStorage.removeItem('id_token');
+				localStorage.removeItem('id_token');
+
+				this.router.navigate(['/login']);
+				return '';
+			}
+
+			return token;
+		},
+		noJwtError: true
+	}), http);
+}

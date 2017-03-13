@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-// This is a bunch of BS
-@import '../../node_modules/bootstrap/scss/bootstrap-flex';
-
 // Planner Styles
 @import '../app/components/planner/event-selection';
 
@@ -39,4 +36,23 @@ body {
 	background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url($background-url--blur);
 	background-size: cover;
 	background-attachment: fixed;
+}
+
+// Fix for Bootstrap modals
+.modal-backdrop.in {
+	opacity: 0.5 !important;
+}
+
+.modal-open .modal {
+	&.in {
+		opacity: 1;
+	}
+
+	.modal-dialog {
+		transform: none !important;
+
+		.modal-content .modal-header .close {
+			align-self: flex-start;
+		}
+	}
 }
