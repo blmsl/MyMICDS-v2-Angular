@@ -20,6 +20,10 @@
 			<i class="fa fa-bullhorn"></i> Bulletin
 			<i *ngIf="url === 'daily-bulletin'" class="fa fa-caret-down"></i>
 		</a>
+		<a [class.collapse]="isCollapsed && url !== 'sports'" class="nav-item nav-link" [routerLink]="['/sports']" [routerLinkActive]="['active']" (click)="isCollapsed = !isCollapsed">
+			<i class="fa fa-futbol-o"></i> Sports
+			<i *ngIf="url === 'sports'" class="fa fa-caret-down"></i>
+		</a>
 		<a [class.collapse]="isCollapsed && url !== 'settings'" *ngIf="userService.getUsername()" class="nav-item nav-link" [routerLink]="['/settings']" [routerLinkActive]="['active']" (click)="isCollapsed = !isCollapsed">
 			<i class="fa fa-gear"></i> Settings
 			<i *ngIf="url === 'settings'" class="fa fa-caret-down"></i>
