@@ -7,9 +7,8 @@
 	<div mymicds-blur class="notes-card" *ngFor="let notebook of classesArr">
 		<h2>{{ notebook.classStr }}</h2>
 		<h4>{{ notebook.classmates.length }} member(s)</h4>
-		<a class="btn btn-primary" [href]="notebook.oneNoteLink">
-			Open in OneNote
-		</a>
+		<a class="btn btn-primary" [href]="notebook.links.oneNoteClientUrl.href | safeUrl">Open in OneNote Client</a>
+		<a class="btn btn-primary" [href]="notebook.links.oneNoteWebUrl.href | safeUrl">Open in OneNote Web</a>
 
 		<div mymicds-blur class="notes-info">
 			<p class="classmates">

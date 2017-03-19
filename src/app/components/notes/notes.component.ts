@@ -47,6 +47,7 @@ export class NotesComponent implements OnInit {
 		this.notesService.getClassGroups().subscribe(
 			classesArr => {
 				this.classesArr = classesArr;
+				console.log(classesArr);
 			},
 			err => {
 				console.log(err);
