@@ -1,4 +1,20 @@
-<div class="container">
+<!--<div class="container">
 	{{ (editor.scrollHeight - 3) / 24 }} lines
 	<textarea #editor class="editor" [(ngModel)]="text" (keyup)="resizeEditor()"></textarea>
+</div>-->
+
+<div class="container">
+	<div mymicds-blur class="notes-card" *ngFor="let notebook of classesArr">
+		<h2>{{ notebook.classStr }}</h2>
+		<h4>{{ notebook.classmates.length }} member(s)</h4>
+		<a class="btn btn-primary" [href]="notebook.oneNoteLink">
+			Open in OneNote
+		</a>
+
+		<div mymicds-blur class="notes-info">
+			<p class="classmates">
+				<span *ngFor="let username of notebook.classmates">{{ username }}</span>
+			</p>
+		</div>
+	</div>
 </div>

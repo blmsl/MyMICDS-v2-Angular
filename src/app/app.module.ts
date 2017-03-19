@@ -55,6 +55,7 @@ import { UserService } from './services/user.service';
 import { WeatherService } from './services/weather.service';
 import { NotificationService } from './services/notification.service';
 import { SuggestionsService } from './services/suggestions.service';
+import { NotesService } from './services/notes.service';
 
 import { CompassDirectionPipe } from './pipes/compass-direction.pipe';
 import { DayRotationPipe } from './pipes/day-rotation.pipe';
@@ -145,6 +146,7 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 		WeatherService,
 		NotificationService,
 		SuggestionsService,
+		NotesService,
 
 		// JWT
 		{

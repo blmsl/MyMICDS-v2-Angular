@@ -65,7 +65,8 @@ const appRoutes: Routes = [
 	},
 	{
 		path: 'notes',
-		component: NotesComponent
+		component: NotesComponent,
+		canActivate: [AuthGuard]
 	},
 	{
 		path: 'settings',
@@ -113,6 +114,10 @@ const appRoutes: Routes = [
 		path: 'suggestions',
 		component: SuggestionsComponent,
 		canActivate: [AuthGuard]
+	},
+	{
+		path: '**',
+		component: HomeComponent
 	}
 ];
 
