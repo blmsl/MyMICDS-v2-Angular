@@ -58,6 +58,10 @@
 	},
 	"defaults": {
 		"styleExt": "scss",
-		"prefixInterfaces": false
+		"prefixInterfaces": false,
+		"component": {
+			"viewEncapsulation": "Emulated",
+			"changeDetection": "Default"
+		}
 	}
 }
