@@ -31,8 +31,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { NotesComponent } from './components/notes/notes.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { SportsComponent } from './components/sports/sports.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SportsComponent } from './components/sports/sports.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import { QuotesComponent } from './components/quotes/quotes.component';
 
 import { BlurDirective, DarkBlurDirective, WhiteBlurDirective } from './directives/blur.directive';
 
@@ -44,18 +46,19 @@ import { BulletinService } from './services/bulletin.service';
 import { CanvasService } from './services/canvas.service';
 import { ClassesService } from './services/classes.service';
 import { LunchService } from './services/lunch.service';
+import { NotesService } from './services/notes.service';
+import { NotificationService } from './services/notification.service';
 import { PlannerService } from './services/planner.service';
 import { PortalService } from './services/portal.service';
+import { QuoteService } from './services/quote.service';
 import { ScheduleService } from './services/schedule.service';
 import { SnowdayService } from './services/snowday.service';
 // import { SocketioService } from './services/socketio.service';
 import { SportsService } from './services/sports.service';
 import { StatsService } from './services/stats.service';
+import { SuggestionsService } from './services/suggestions.service';
 import { UserService } from './services/user.service';
 import { WeatherService } from './services/weather.service';
-import { NotificationService } from './services/notification.service';
-import { SuggestionsService } from './services/suggestions.service';
-import { NotesService } from './services/notes.service';
 
 import { CompassDirectionPipe } from './pipes/compass-direction.pipe';
 import { DayRotationPipe } from './pipes/day-rotation.pipe';
@@ -64,7 +67,6 @@ import { SafeHtmlPipe, SafeScriptPipe, SafeStylePipe, SafeUrlPipe, SafeResourceU
 import { SchoolPercentagePipe } from './pipes/school-percentage.pipe';
 import { ValuesPipe } from './pipes/values.pipe';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
-import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 
 @NgModule({
 	declarations: [
@@ -93,6 +95,8 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 		SettingsComponent,
 		SidebarComponent,
 		SportsComponent,
+		SuggestionsComponent,
+		QuotesComponent,
 
 		// Directives
 		BlurDirective,
@@ -110,8 +114,7 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 		SafeResourceUrlPipe,
 		SchoolPercentagePipe,
 		ValuesPipe,
-		WeatherIconPipe,
-		SuggestionsComponent
+		WeatherIconPipe
 	],
 	imports: [
 		BrowserModule,
@@ -135,18 +138,19 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 		CanvasService,
 		ClassesService,
 		LunchService,
+		NotesService,
+		NotificationService,
 		PlannerService,
 		PortalService,
+		QuoteService,
 		ScheduleService,
 		SnowdayService,
 		// SocketioService,
 		SportsService,
 		StatsService,
+		SuggestionsService,
 		UserService,
 		WeatherService,
-		NotificationService,
-		SuggestionsService,
-		NotesService,
 
 		// JWT
 		{

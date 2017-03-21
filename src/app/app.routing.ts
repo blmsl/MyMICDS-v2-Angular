@@ -17,6 +17,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { QuotesComponent } from './components/quotes/quotes.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { SportsComponent } from './components/sports/sports.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
@@ -116,8 +117,12 @@ const appRoutes: Routes = [
 		canActivate: [AuthGuard]
 	},
 	{
+		path: 'quote',
+		component: QuotesComponent
+	},
+	{
 		path: '**',
-		component: HomeComponent
+		redirectTo: '/home'
 	}
 ];
 
