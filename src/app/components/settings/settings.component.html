@@ -186,8 +186,8 @@
 						<h4>Portal Classes</h4>
 						<div *ngFor="let class of portalClasses" class="checkbox">
 							<label>
-								<input type="checkbox" (change)="aliasChange($event, 'portal', class, aliasClass._id)" [checked]="aliasChecked('portal', class, aliasClass._id)" [disabled]="aliasDisabled('portal', class, aliasClass._id)">
-								{{ class }}
+								<input type="checkbox" (change)="aliasChange($event, 'portal', class.classStr, aliasClass._id)" [checked]="aliasChecked('portal', class.classStr, aliasClass._id)" [disabled]="aliasDisabled('portal', class.classStr, aliasClass._id)">
+								{{ class.classStr }}
 							</label>
 						</div>
 					</div>
