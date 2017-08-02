@@ -85,6 +85,7 @@ import { SafeHtmlPipe, SafeScriptPipe, SafeStylePipe, SafeUrlPipe, SafeResourceU
 import { SchoolPercentagePipe } from './pipes/school-percentage.pipe';
 import { ValuesPipe } from './pipes/values.pipe';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
+import { SickdayComponent } from './app/components/sickday/sickday.component';
 
 @NgModule({
 	declarations: [
@@ -142,7 +143,8 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 		SafeResourceUrlPipe,
 		SchoolPercentagePipe,
 		ValuesPipe,
-		WeatherIconPipe
+		WeatherIconPipe,
+		SickdayComponent
 	],
 	imports: [
 		BrowserModule,
