@@ -51,6 +51,7 @@ import { UrlComponent } from './components/settings/url/url.component';
 import { SportsComponent } from './components/sports/sports.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { QuotesComponent } from './components/quotes/quotes.component';
+import { SickdayComponent } from './components/sickday/sickday.component';
 
 import { BlurDirective, DarkBlurDirective, WhiteBlurDirective } from './directives/blur.directive';
 
@@ -85,7 +86,6 @@ import { SafeHtmlPipe, SafeScriptPipe, SafeStylePipe, SafeUrlPipe, SafeResourceU
 import { SchoolPercentagePipe } from './pipes/school-percentage.pipe';
 import { ValuesPipe } from './pipes/values.pipe';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
-import { SickdayComponent } from './app/components/sickday/sickday.component';
 
 @NgModule({
 	declarations: [
