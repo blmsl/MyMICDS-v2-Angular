@@ -34,6 +34,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
 	dayRotation: any;
 	daysLeft: number;
 	minutesLeft: number;
+	secondsLeft: number;
 	hoursLeft: number;
 	progressResize: ResizeSensor;
 
@@ -58,6 +59,8 @@ export class CountdownComponent implements OnInit, OnDestroy {
 	};
 
 	@ViewChild('moduleContainer') containerEl: ElementRef;
+	@ViewChild('minutesPath') minutesPath: ElementRef;
+	@ViewChild('secondsPath') secondsPath: ElementRef;
 
 	daysScale: number;
 
@@ -144,19 +147,32 @@ export class CountdownComponent implements OnInit, OnDestroy {
 
 	initProgress() {
 		clearInterval(this.countdownInterval);
-		this.minutesLeft = Math.floor(this._countdownTo.diff(moment(), 'minutes') / 24) % 60;
+		this.secondsLeft = this._countdownTo.diff(moment(), 'seconds') % 60;
+		this.minutesLeft = this._countdownTo.diff(moment(), 'minutes') % 60;
 		this.hoursLeft = this._countdownTo.diff(moment(), 'hours') % 24;
 
-		let progress: SVGPathElement = this.renderer.selectRootElement('.countdown-wrapper .countdown-progress path');
-		let borderLen = (progress.getTotalLength() + 5) / 60, offset = 0;
-		this.renderer.setStyle(progress, 'stroke-dashoffset', borderLen);
-		this.renderer.setStyle(progress, 'stroke-dasharray', borderLen + ',' + borderLen);
+		let minutesProgress: {el: SVGPathElement, borderLen: number, offset: number, start: number}
+			= { el: this.renderer.selectRootElement(this.minutesPath.nativeElement), borderLen: 0, offset: 0, start: this.minutesLeft };
+		let secondsProgress: {el: SVGPathElement, borderLen: number, offset: number, start: number}
+			= { el: this.renderer.selectRootElement(this.secondsPath.nativeElement), borderLen: 0, offset: 0, start: this.secondsLeft };
+		[minutesProgress, secondsProgress].forEach((progress) => {
+			progress.borderLen = (progress.el.getTotalLength() + 5);
+			progress.offset = progress.borderLen / 60 * progress.start;
+			this.renderer.setStyle(progress.el, 'stroke-dashoffset', progress.borderLen);
+			this.renderer.setStyle(progress.el, 'stroke-dasharray', progress.borderLen + ',' + progress.borderLen);
+		});
 
 		this.countdownInterval = setInterval(() => {
-			this.minutesLeft = Math.floor(this._countdownTo.diff(moment(), 'minutes') / 24) % 60;
+			this.minutesLeft = this._countdownTo.diff(moment(), 'minutes') % 60;
 			this.hoursLeft = this._countdownTo.diff(moment(), 'hours') % 24;
-			if (offset >= 0) { offset += borderLen / 3; }
-			this.renderer.setStyle(progress, 'stroke-dashoffset', offset);
+			[minutesProgress, secondsProgress].forEach((progress, i) => {
+				if (progress.offset >= 0) {
+					progress.offset -= progress.borderLen / Math.pow(60, (i + 1));
+				} else {
+					progress.offset = progress.borderLen;
+				}
+				this.renderer.setStyle(progress.el, 'stroke-dashoffset', progress.offset);
+			});
 		}, 1000);
 	}
 

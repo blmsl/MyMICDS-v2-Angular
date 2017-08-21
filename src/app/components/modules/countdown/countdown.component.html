@@ -7,10 +7,24 @@
 		</div>
 		<div class="details mt-2">{{ hoursLeft }} Hours {{ minutesLeft }} Minutes</div>
 	</h2>
-	<h2 class="display-4 until">until...</h2>
 	<h2 class="event-label display-4" mymicds-blur>{{ eventLabel }}</h2>
-	<svg [style.display]="dayRotation ? 'inherit' : 'none'" class="countdown-progress" viewBox='0 0 510 510' preserveAspectRatio='none'>
-		<path d='M5,5 505,5 505,505 5,505 5,2.5'/>
+	<svg [style.display]="dayRotation ? 'inherit' : 'none'" class="countdown-progress" viewBox='0 0 520 520' preserveAspectRatio='none'>
+		<path #minutesPath
+			d="
+			M 260 260
+			m 0 -250
+			a 250 250 0 1 0 0 500
+			a 250 250 0 1 0 0 -500
+			"
+		/>
+		<path #secondsPath
+			d="
+			M 260 260
+			m 0 -240
+			a 240 240 0 1 0 0 480
+			a 240 240 0 1 0 0 -480
+			"
+		/>
 		<!-- end is start point - stroke width/2 -->
 	</svg>
 </div>
